@@ -1,3 +1,11 @@
+local insert = table.insert
+local find = table.find
+local random = math.random
+local huge = math.huge
+local Vector2New = Vector2.new
+local Vector3New = Vector3.new
+local CFrameNew = CFrame.new
+
 local MacLib = loadstring(game:HttpGet("https://github.com/biggaboy212/Maclib/releases/latest/download/maclib.txt"))()
 
 local wcamera = workspace.CurrentCamera
@@ -6,6 +14,259 @@ local runs = game:GetService("RunService")
 local uis = game:GetService("UserInputService")
 local tweens = game:GetService("TweenService")
 local scriptloading = true
+
+if not _G.allvars then _G.allvars = {} end
+if _G.allvars.camthirdp == nil then _G.allvars.camthirdp = false end
+if _G.thirdpshow == nil then _G.thirdpshow = false end
+
+local invisanim = Instance.new("Animation")
+invisanim.AnimationId = "rbxassetid://15609995579"
+local invisnum = 2.35
+local invistrack
+local desynctable = {}
+local desyncvis = nil
+local desyncbool = false
+local invisbool = false
+local desyncPos = false
+local desynXp = 0
+local desynYp = 0
+local desynZp = 0
+local desyncOr = false
+local desynXo = 0
+local desynYo = 0
+local desynZo = 0
+local visdesync = false
+local desynccolor = Color3.fromRGB(255,0,0)
+local desynctrans = 0.5
+local undergroundusers = {}
+
+require(game.Players.LocalPlayer.PlayerScripts.PlayerModule.CameraModule.TransparencyController).Update = function(a1, a2) 
+    local v14_3_ = workspace
+    local v14_2_ = v14_3_.CurrentCamera
+
+    local setto = 0
+    if not _G.allvars or _G.allvars.camthirdp == false or _G.thirdpshow == false then
+        setto = 1
+    end
+
+    if v14_2_ then
+        v14_3_ = a1.enabled
+        if v14_3_ then
+            local v14_6_ = v14_2_.Focus
+            local v14_5_ = v14_6_.p
+            local v14_7_ = v14_2_.CoordinateFrame
+            v14_6_ = v14_7_.p
+            local v14_4_ = v14_5_ - v14_6_
+            v14_3_ = v14_4_.magnitude
+            v14_5_ = 2
+            v14_4_ = 0
+            v14_5_ = 0.500000
+            if v14_4_ < v14_5_ then
+                v14_4_ = 0
+            end
+            v14_5_ = a1.lastTransparency
+            if v14_5_ then
+                v14_5_ = 1
+                if v14_4_ < v14_5_ then
+                    v14_5_ = a1.lastTransparency
+                    v14_6_ = 0.950000
+                    if v14_5_ < v14_6_ then
+                        v14_6_ = a1.lastTransparency
+                        v14_5_ = v14_4_ - v14_6_
+                        v14_7_ = 2.800000
+                        v14_6_ = v14_7_ * a2
+                        local v14_9_ = -v14_6_
+                        local v14_8_ = v14_5_
+                        local v14_10_ = v14_6_
+                        local clamp = math.clamp
+                        v14_7_ = clamp(v14_8_, v14_9_, v14_10_)
+                        v14_5_ = v14_7_
+                        v14_7_ = a1.lastTransparency
+                        v14_4_ = v14_7_ + v14_5_
+                    else
+                        v14_5_ = true
+                        a1.transparencyDirty = v14_5_
+                    end
+                else
+                    v14_5_ = true
+                    a1.transparencyDirty = v14_5_
+                end
+            else
+                v14_5_ = true
+                a1.transparencyDirty = v14_5_
+            end
+            v14_7_ = v14_4_ 
+            local v14_8_ = 2
+            v14_7_ = 0
+            v14_8_ = 1
+            v14_4_ = v14_5_
+            v14_5_ = a1.transparencyDirty
+            if not v14_5_ then
+                v14_5_ = a1.lastTransparency
+                if v14_5_ ~= v14_4_ then
+                    v14_5_ = pairs
+                    v14_6_ = a1.cachedParts
+                    v14_5_, v14_6_, v14_7_ = v14_5_(v14_6_)
+                    for v14_8_, v14_9_ in v14_5_, v14_6_, v14_7_ do
+                        local v14_10_ = false 
+                        if v14_10_ then
+                            local v14_11_ = nil 
+                            v14_10_ = v14_11_ and v14_11_.AvatarGestures
+                            if v14_10_ then
+                                v14_10_ = {}
+                                local Hat = Enum.AccessoryType.Hat
+                                local v14_12_ = true
+                                v14_10_[Hat] = v14_12_
+                                local Hair = Enum.AccessoryType.Hair
+                                v14_12_ = true
+                                v14_10_[Hair] = v14_12_
+                                local Face = Enum.AccessoryType.Face
+                                v14_12_ = true
+                                v14_10_[Face] = v14_12_
+                                local Eyebrow = Enum.AccessoryType.Eyebrow
+                                v14_12_ = true
+                                v14_10_[Eyebrow] = v14_12_
+                                local Eyelash = Enum.AccessoryType.Eyelash
+                                v14_12_ = true
+                                v14_10_[Eyelash] = v14_12_
+                                v14_11_ = v14_8_.Parent
+                                local v14_13_ = "Accessory"
+                                v14_11_ = v14_11_:IsA(v14_13_)
+                                if v14_11_ then
+                                    v14_13_ = v14_8_.Parent
+                                    v14_12_ = v14_13_.AccessoryType
+                                    v14_11_ = v14_10_[v14_12_]
+                                    if not v14_11_ then
+                                        v14_11_ = v14_8_.Name
+                                        if v14_11_ == "Head" then
+                                            v14_8_.LocalTransparencyModifier = setto
+                                        else
+                                            v14_11_ = 0
+                                            v14_8_.LocalTransparencyModifier = setto
+                                            v14_8_.LocalTransparencyModifier = setto
+                                        end
+                                    end
+                                end
+                                v14_11_ = v14_8_.Name
+                                if v14_11_ == "Head" then
+                                    v14_8_.LocalTransparencyModifier = setto
+                                else
+                                    v14_11_ = 0
+                                    v14_8_.LocalTransparencyModifier = setto
+                                    v14_8_.LocalTransparencyModifier = setto
+                                end
+                            else
+                                v14_8_.LocalTransparencyModifier = setto
+                            end
+                        else
+                            v14_8_.LocalTransparencyModifier = setto
+                        end
+                    end
+                    v14_5_ = false
+                    a1.transparencyDirty = v14_5_
+                    a1.lastTransparency = setto
+                end
+            end
+            v14_5_ = pairs
+            v14_6_ = a1.cachedParts
+            v14_5_, v14_6_, v14_7_ = v14_5_(v14_6_)
+            for v14_8_, v14_9_ in v14_5_, v14_6_, v14_7_ do
+                local v14_10_ = false 
+                if v14_10_ then
+                    local v14_11_ = nil 
+                    v14_10_ = v14_11_ and v14_11_.AvatarGestures
+                    if v14_10_ then
+                        v14_10_ = {}
+                        local Hat = Enum.AccessoryType.Hat
+                        local v14_12_ = true
+                        v14_10_[Hat] = v14_12_
+                        local Hair = Enum.AccessoryType.Hair
+                        v14_12_ = true
+                        v14_10_[Hair] = v14_12_
+                        local Face = Enum.AccessoryType.Face
+                        v14_12_ = true
+                        v14_10_[Face] = v14_12_
+                        local Eyebrow = Enum.AccessoryType.Eyebrow
+                        v14_12_ = true
+                        v14_10_[Eyebrow] = v14_12_
+                        local Eyelash = Enum.AccessoryType.Eyelash
+                        v14_12_ = true
+                        v14_10_[Eyelash] = v14_12_
+                        v14_11_ = v14_8_.Parent
+                        local v14_13_ = "Accessory"
+                        v14_11_ = v14_11_:IsA(v14_13_)
+                        if v14_11_ then
+                            v14_13_ = v14_8_.Parent
+                            v14_12_ = v14_13_.AccessoryType
+                            v14_11_ = v14_10_[v14_12_]
+                            if not v14_11_ then
+                                v14_11_ = v14_8_.Name
+                                if v14_11_ == "Head" then
+                                    v14_8_.LocalTransparencyModifier = setto
+                                else
+                                    v14_11_ = 0
+                                    v14_8_.LocalTransparencyModifier = setto
+                                    v14_8_.LocalTransparencyModifier = setto
+                                end
+                            end
+                        end
+                        v14_11_ = v14_8_.Name
+                        if v14_11_ == "Head" then
+                            v14_8_.LocalTransparencyModifier = setto
+                        else
+                            v14_11_ = 0
+                            v14_8_.LocalTransparencyModifier = setto
+                            v14_8_.LocalTransparencyModifier = setto
+                        end
+                    else
+                        v14_8_.LocalTransparencyModifier = setto
+                    end
+                else
+                    v14_8_.LocalTransparencyModifier = setto
+                end
+            end
+            v14_5_ = false
+            a1.transparencyDirty = v14_5_
+            a1.lastTransparency = setto
+        end
+    end
+end
+
+local oldLoadConfig = MacLib.LoadConfig
+MacLib.LoadConfig = function(self, config)
+    local result = oldLoadConfig(self, config)
+    
+    for flagName, value in pairs(self.Flags) do
+        local element = self.Elements[flagName]
+        if element and element.Type == "Slider" then
+            if element.UpdateVisuals then
+                element:UpdateVisuals(value)
+            end
+            
+            if element.SetValue then
+                element:SetValue(value)
+            end
+            
+            if element.Slider and element.Fill then
+                local percent = (value - element.Min) / (element.Max - element.Min)
+                element.Fill.Size = UDim2.new(percent, 0, 1, 0)
+                element.Slider.Position = UDim2.new(percent, 0, 0.5, 0)
+            end
+            
+            if element.ValueLabel then
+                local displayValue = value
+                if element.Precise then
+                    displayValue = string.format("%.2f", value)
+                elseif element.Suffix then
+                    displayValue = value .. element.Suffix
+                end
+                element.ValueLabel.Text = tostring(displayValue)
+            end
+        end
+    end
+    
+    return result
+end
 
 local ESPFunctions = {}
 function ESPFunctions.Create(Class, Properties)
@@ -19,6 +280,8 @@ end
 local allvars = {noswaybool = false, instaequip = false, customRapidFireEnabled = true, multitaps = 1}
 allvars.espdead = false
 allvars.worldnomines = false
+allvars.camthirdp = false
+local thirdpshow = false
 
 if not allvars.espchamstransparency then allvars.espchamstransparency = 0.5 end
 if not allvars.espthermalbool then allvars.espthermalbool = false end
@@ -41,7 +304,7 @@ local aimtype = "Instant Hit"
 local aimfov = 150
 local aimsnapline = Drawing.new("Line") 
 local snaplinebool = false
-local aimdistance = 800 
+local aimdistance = 1000 
 local aimchance = 100
 local aimfakewait = 0
 local aimfovcircle = Drawing.new("Circle")
@@ -85,6 +348,56 @@ local hitsoundlibUI = {}
 for i,v in hitsoundlib do
     hitsoundlibUI[v] = i
 end
+
+local function playHitSound(isHead)
+    if not hitsoundbool then return end
+    
+    local soundId = isHead and hitsoundlib[hitsoundhead] or hitsoundlib[hitsoundbody]
+    if not soundId then return end
+    
+    local sound = Instance.new("Sound")
+    sound.SoundId = soundId
+    sound.Volume = 1
+    sound.Parent = workspace
+    sound:Play()
+    
+    sound.Ended:Connect(function()
+        sound:Destroy()
+    end)
+    
+    task.delay(3, function()
+        if sound and sound.Parent then
+            sound:Destroy()
+        end
+    end)
+end
+
+localplayer.CharacterAdded:Connect(function(lchar)
+    if localplayer.PlayerGui:WaitForChild("MainGui") then
+        localplayer.PlayerGui.MainGui.ChildAdded:Connect(function(Sound)
+            if Sound:IsA("Sound") and hitsoundbool then
+                if Sound.SoundId == "rbxassetid://4585351098" or Sound.SoundId == "rbxassetid://4585382589" then 
+                    Sound.SoundId = hitsoundlib[hitsoundhead]
+                elseif Sound.SoundId == "rbxassetid://4585382046" or Sound.SoundId == "rbxassetid://4585364605" then 
+                    Sound.SoundId = hitsoundlib[hitsoundbody]
+                end
+            end
+        end)
+    end
+end)
+
+if localplayer.PlayerGui:FindFirstChild("MainGui") then
+    localplayer.PlayerGui.MainGui.ChildAdded:Connect(function(Sound)
+        if Sound:IsA("Sound") and hitsoundbool then
+            if Sound.SoundId == "rbxassetid://4585351098" or Sound.SoundId == "rbxassetid://4585382589" then 
+                Sound.SoundId = hitsoundlib[hitsoundhead]
+            elseif Sound.SoundId == "rbxassetid://4585382046" or Sound.SoundId == "rbxassetid://4585364605" then 
+                Sound.SoundId = hitsoundlib[hitsoundbody]
+            end
+        end
+    end)
+end
+
 local aimFRIENDLIST = {}
 local friendlistmode = "Blacklist"
 local friendlistbots = false
@@ -124,7 +437,7 @@ aimfovcircle.Visible = false
 aimfovcircle.Radius = aimfov
 aimfovcircle.Thickness = 0.5
 aimfovcircle.Filled = false
-aimfovcircle.Transparency = 1
+aimfovcircle.Transparency = 0.2
 aimfovcircle.Color = Color3.fromRGB(255, 255, 255)
 aimfovcircle.Position = Vector2.new(wcamera.ViewportSize.X / 2, wcamera.ViewportSize.Y / 2)
 aimtargetname.Text = "None"
@@ -164,9 +477,16 @@ local function isvisible(char, object)
 
     local origin = localplayer.Character.HumanoidRootPart.Position + Vector3.new(0, 1.5, 0)
     local pos = object.Position
-    local dir = pos - origin
-    local dist = dir.Magnitude + 2500
-    local penetrated = true
+local allvars = {noswaybool = false, instaequip = false, customRapidFireEnabled = true, multitaps = 1}
+allvars.espdead = false
+allvars.worldnomines = false
+
+local allvars = {noswaybool = false, instaequip = false, customRapidFireEnabled = true, multitaps = 1}local allvars = {noswaybool = false, instaequip = false, customRapidFireEnabled = true, multitaps = 1}
+allvars.espdead = false
+allvars.worldnomines = false
+
+local allvars = {noswaybool = false, instaequip = false, customRapidFireEnabled = true, multitaps = 1}    local dir = pos - origin
+    local dist = dir.Magnitude + 5
     dir = dir.Unit
 
     local params = RaycastParams.new()
@@ -201,14 +521,12 @@ local function isvisible(char, object)
 
         local FunctionLibraryExtension = require(game.ReplicatedStorage.Modules.FunctionLibraryExtension)
         local armorpen1, newpos2 = FunctionLibraryExtension.Penetration(FunctionLibraryExtension, ray.Instance, ray.Position, dir, armorpen4)
-        if armorpen1 == nil or newpos2 == nil then
-            return false
-        end
-
-        local neworigin = ray.Position + dir * 0.01
-        local newray = workspace:Raycast(neworigin, dir * (dist - (neworigin - origin).Magnitude), params)
-        if newray and newray.Instance:IsDescendantOf(targetChar) then
-            return true
+        if armorpen1 and newpos2 then
+            local neworigin = ray.Position + dir * 0.01
+            local newray = workspace:Raycast(neworigin, dir * (dist - (neworigin - origin).Magnitude), params)
+            if newray and newray.Instance:IsDescendantOf(targetChar) then
+                return true
+            end
         end
     end
 
@@ -276,6 +594,118 @@ local function isvisible(char, object)
 
     return false
 end
+local LinePool = {
+    Lines = {},
+    MaxSize = 20, 
+    ActiveLines = {},
+    CleanupInterval = 2, 
+    LastCleanup = tick()
+}
+
+function LinePool:GetLine()
+    local currentTime = tick()
+    if currentTime - self.LastCleanup > self.CleanupInterval then
+        self:Cleanup()
+        self.LastCleanup = currentTime
+    end
+    
+    for i, line in ipairs(self.Lines) do
+        if not line.InUse then
+            line.InUse = true
+            line.LastUsed = tick()
+            table.insert(self.ActiveLines, line)
+            return line.Object
+        end
+    end
+    
+    if #self.Lines < self.MaxSize then
+        local newLine = Drawing.new("Line")
+        newLine.Visible = false
+        newLine.Thickness = 1
+        newLine.Transparency = 1
+        
+        local lineData = {
+            Object = newLine,
+            InUse = true,
+            LastUsed = tick()
+        }
+        
+        table.insert(self.Lines, lineData)
+        table.insert(self.ActiveLines, lineData)
+        return newLine
+    end
+    
+    local oldestLine = nil
+    local oldestTime = math.huge
+    
+    for _, lineData in ipairs(self.Lines) do
+        if lineData.LastUsed < oldestTime then
+            oldestLine = lineData
+            oldestTime = lineData.LastUsed
+        end
+    end
+    
+    if oldestLine then
+        oldestLine.InUse = true
+        oldestLine.LastUsed = tick()
+        oldestLine.Object.Visible = false
+        return oldestLine.Object
+    end
+    
+    local tempLine = Drawing.new("Line")
+    tempLine.Visible = false
+    tempLine.Thickness = 1
+    tempLine.Transparency = 1
+    return tempLine
+end
+
+function LinePool:ReleaseLine(line)
+    for i, lineData in ipairs(self.Lines) do
+        if lineData.Object == line then
+            lineData.InUse = false
+            line.Visible = false
+            
+            for j, activeLine in ipairs(self.ActiveLines) do
+                if activeLine == lineData then
+                    table.remove(self.ActiveLines, j)
+                    break
+                end
+            end
+            
+            break
+        end
+    end
+end
+
+function LinePool:ReleaseAll()
+    for i, lineData in ipairs(self.Lines) do
+        lineData.InUse = false
+        lineData.Object.Visible = false
+    end
+    self.ActiveLines = {}
+end
+
+function LinePool:Cleanup()
+    local currentTime = tick()
+    local inactiveTime = 10 
+    
+    for i = #self.Lines, 1, -1 do
+        local lineData = self.Lines[i]
+        if not lineData.InUse and (currentTime - lineData.LastUsed > inactiveTime) then
+            pcall(function()
+                lineData.Object:Remove()
+            end)
+            table.remove(self.Lines, i)
+        end
+    end
+end
+
+runs.Heartbeat:Connect(function()
+    if #LinePool.Lines > LinePool.MaxSize * 0.8 then
+        LinePool:Cleanup()
+    end
+end)
+
 local function runhitmark(v140)
     if hitmarkbool then
         local hitpart = Instance.new("Part", workspace)
@@ -308,11 +738,13 @@ local function runhitmark(v140)
             tweens:Create(hit_img, tweninfo, {ImageTransparency = 1}):Play()
             tweens:Create(hit_img, tweninfo2, {Rotation = 180}):Play()
             task.wait(hitmarkfade)
-            hit_img:Destroy()
-            hit:Destroy()
+            if hitpart and hitpart.Parent then
+                hitpart:Destroy()
+            end
         end)
     end
 end
+
 pcall(function()
     aimogfunc = require(game.ReplicatedStorage.Modules.FPS.Bullet).CreateBullet
     
@@ -371,11 +803,11 @@ pcall(function()
             elseif aimpart == "Random" then
                 return charact:FindFirstChild(bparts[math.random(1, #bparts)])
             else
-                return charact:FindFirstChild("Head") -- Fallback to head
+                return charact:FindFirstChild("Head") 
             end
         end
 
-        if aimbots then -- Check for bots first
+        if aimbots then 
             for _, botfold in pairs(workspace.AiZones:GetChildren()) do
                 for _, bot in pairs(botfold:GetChildren()) do
                     if bot:IsA("Model") and bot:FindFirstChild("Humanoid") and bot.Humanoid.Health > 0 then
@@ -683,18 +1115,8 @@ pcall(function()
                             task.spawn(function()
                                 runhitmark(v140)
                             end)
-                            if hitsoundbool then
-                                local isHead = v137.Name:find("Head") ~= nil
-                                local soundId = isHead and hitsoundlib[hitsoundhead] or hitsoundlib[hitsoundbody]
-                                
-                                if soundId then
-                                    local sound = Instance.new("Sound", workspace)
-                                    sound.SoundId = soundId
-                                    sound.Volume = 1
-                                    sound:Play()
-                                    game:GetService("Debris"):AddItem(sound, 2)
-                                end
-                            end
+                            local isHead = v137.Name:find("Head") ~= nil
+                            playHitSound(isHead)
                         elseif v137.Name == "Terrain" then 
                             local v175 = v137.CFrame:ToObjectSpace(CFrame.new(v140))
                             v_u_5:FireServer(v137, v175, v_u_108, hittick)
@@ -704,12 +1126,14 @@ pcall(function()
                             task.spawn(function()
                                 runhitmark(v140)
                             end)
+                            playHitSound(false)
                         else 
                             v_u_2.Impact(v137, v140, v138, v139, v_u_114, "Ranged", true)
 
                             task.spawn(function()
                                 runhitmark(v140)
                             end)
+                            playHitSound(false)
 
                             local arg1, arg2, arg3 = v_u_4.Penetration(v_u_4, v137, v140, v_u_114, armorpen4)
                             if arg1 == nil or arg2 == nil then
@@ -1097,10 +1521,8 @@ local function getItemCategory(item)
     end
 end
 
-
 local function trackItem(instance, displayName, isKey, isContainer, isDroppedItem)
     if WorldESP.TrackedItems[instance] then return end
-    
     
     local cleanName = displayName
     
@@ -1382,9 +1804,9 @@ local CFrameSpeed = {
 
 local ZoomSettings = {
     Enabled = false,
-    ZoomTime = 0.09,
+    ZoomTime = 0.07,
     ZoomedAmount = 10,
-    Key = Enum.KeyCode.C,
+    Key = Enum.KeyCode.X,
     OldZoom = Workspace.CurrentCamera.FieldOfView,
     IsZooming = false,
     CurrentTween = nil,
@@ -1392,7 +1814,7 @@ local ZoomSettings = {
     EndConnection = nil,
     IsFOVChangerActive = false,  
     IsKeyDown = false,
-    LastZoomFOV = nil
+    LastBindUpdate = 0
 }
 
 local tabGroups = {
@@ -1410,6 +1832,7 @@ local tabs = {
 local sections = {
     AimMain = tabs.Aimbot:Section({ Side = "Left", Name = "Mine Settings" }),
     AimTargeting = tabs.Aimbot:Section({ Side = "Left", Name = "FOV Settings" }),
+    HitmarkerVisuals = tabs.Aimbot:Section({ Side = "Left", Name = "Hit Visuals" }),
     AimVisual = tabs.Aimbot:Section({ Side = "Right", Name = "Visual settings" }),
     GunMod = tabs.Aimbot:Section({ Side = "Right", Name = "Gun Mod" }),
     
@@ -1815,11 +2238,101 @@ sections.AimTargeting:Slider({
     Name = "Aim Distance (Meters)",
     Default = 1000,
     Minimum = 1,
-    Maximum = 1500,
+    Maximum = 10000,
     Callback = function(value)
         aimdistance = value
     end
 }, "AimDistance")
+
+sections.HitmarkerVisuals:Header({
+    Text = "Hitmarker & Hitsound Settings"
+})
+
+sections.HitmarkerVisuals:Toggle({
+    Name = "Hitsounds",
+    Default = false,
+    Callback = function(value)
+        hitsoundbool = value
+    end
+}, "HitsoundToggle")
+
+local hitsoundNames = {}
+for name, _ in pairs(hitsoundlib) do
+    table.insert(hitsoundNames, name)
+end
+
+sections.HitmarkerVisuals:Dropdown({
+    Name = "Head Sound",
+    Multi = false,
+    Required = true,
+    Options = hitsoundNames,
+    Default = "Ding",
+    Callback = function(value)
+        hitsoundhead = value
+        if not scriptloading then
+            pcall(function()
+                local preview = Instance.new("Sound", workspace)
+                preview.SoundId = hitsoundlib[value]
+                preview:Play()
+                task.delay(2, function()
+                    if preview then
+                        preview:Destroy()
+                    end
+                end)
+            end)
+        end
+    end
+}, "HitsoundHead")
+
+sections.HitmarkerVisuals:Dropdown({
+    Name = "Body Sound",
+    Multi = false,
+    Required = true,
+    Options = hitsoundNames,
+    Default = "Blackout",
+    Callback = function(value)
+        hitsoundbody = value
+        if not scriptloading then
+            pcall(function()
+                local preview = Instance.new("Sound", workspace)
+                preview.SoundId = hitsoundlib[value]
+                preview:Play()
+                task.delay(2, function()
+                    if preview then
+                        preview:Destroy()
+                    end
+                end)
+            end)
+        end
+    end
+}, "HitsoundBody")
+
+sections.HitmarkerVisuals:Toggle({
+    Name = "Hitmarker",
+    Default = false,
+    Callback = function(value)
+        hitmarkbool = value
+    end
+}, "HitmarkerToggle")
+
+sections.HitmarkerVisuals:Slider({
+    Name = "Hitmarker Fade Time",
+    Default = 2,
+    Minimum = 0,
+    Maximum = 10,
+    Precise = false,
+    Callback = function(value)
+        hitmarkfade = value
+    end
+}, "HitmarkerFade")
+
+sections.HitmarkerVisuals:Colorpicker({
+    Name = "Hitmarker Color",
+    Default = Color3.fromRGB(255, 255, 255),
+    Callback = function(value)
+        hitmarkcolor = value
+    end
+}, "HitmarkerColor")
 
 sections.AimVisual:Header({
     Text = "Display Settings"
@@ -2020,6 +2533,8 @@ sections.AimVisual:Colorpicker({
         aimsnapline.Color = color
     end
 }, "FOVColor")
+
+
 
 local previousRenderSteppedConnection = RunService:FindFirstChild("RenderSteppedConnection")
 if previousRenderSteppedConnection then
@@ -2609,7 +3124,6 @@ sections.ESPMain:Toggle({
     Callback = function(value)
         ESP.Drawing.Chams.XRay = value
         
-        
         if ESP.TrackedItems and type(ESP.TrackedItems) == "table" then
             for _, data in pairs(ESP.TrackedItems) do
                 if data and data.Drawing and data.Drawing.Chams then
@@ -2663,7 +3177,6 @@ sections.ESPMain:Toggle({
     Callback = function(value)
         ESP.Drawing.GazeLine.Enabled = value
         
-        
         if not value and ESP.GazeLines then
             for _, line in pairs(ESP.GazeLines) do
                 line.Visible = false
@@ -2678,7 +3191,6 @@ sections.ESPMain:Colorpicker({
     Alpha = 0,
     Callback = function(color)
         ESP.Drawing.GazeLine.RGB = color
-        
         
         if ESP.GazeLines then
             for _, line in pairs(ESP.GazeLines) do
@@ -3031,30 +3543,24 @@ sections.PlayerMovement:Toggle({
     end
 }, "JesusToggle")
 
-
-
 local InventoryViewer = {
     Enabled = false,
-    FOVRadius = 80,
-    FOVColor = Color3.fromRGB(255, 255, 255),
-    FOVTransparency = 0.7,
-    FOVCircle = nil,
     GUIEnabled = false,
     ScreenGui = nil,
     MainContainer = nil,
     ScrollingFrame = nil,
     HotbarScrollingFrame = nil, 
     ArmorScrollingFrame = nil,
-    FOVVisible = false,
     UpdateConnection = nil,
     Theme = {
         Background = Color3.fromRGB(25, 25, 25),
-        Border = Color3.fromRGB(255, 255, 255), 
+        Border = Color3.fromRGB(60, 60, 60), 
         Text = Color3.fromRGB(255, 255, 255),
         ItemBg = Color3.fromRGB(40, 40, 40),
-        ItemHover = Color3.fromRGB(60, 60, 60),
+        ItemHover = Color3.fromRGB(70, 70, 70),
         SlotBg = Color3.fromRGB(20, 20, 20)
-    }
+    },
+    CompactMode = true 
 }
 
 local inventoryViewerSection = tabs.Player:Section({ Side = "Right", Name = "Inventory Viewer" })
@@ -3071,16 +3577,6 @@ inventoryViewerSection:Toggle({
         InventoryViewer.Enabled = value
         
         if InventoryViewer.Enabled then
-            if not InventoryViewer.FOVCircle then
-                InventoryViewer.FOVCircle = Drawing.new("Circle")
-                InventoryViewer.FOVCircle.Radius = InventoryViewer.FOVRadius
-                InventoryViewer.FOVCircle.Filled = false
-                InventoryViewer.FOVCircle.Color = InventoryViewer.FOVColor
-                InventoryViewer.FOVCircle.Transparency = InventoryViewer.FOVTransparency
-                InventoryViewer.FOVCircle.NumSides = 64
-                InventoryViewer.FOVCircle.Thickness = 1
-            end
-            InventoryViewer.FOVCircle.Visible = InventoryViewer.FOVVisible
             
             if not InventoryViewer.ScreenGui then
                 local playerGui = Players.LocalPlayer:WaitForChild("PlayerGui", 10)
@@ -3089,6 +3585,7 @@ inventoryViewerSection:Toggle({
                 local screenGui = Instance.new("ScreenGui")
                 screenGui.Name = "PlayerModelFinder"
                 screenGui.Parent = playerGui
+                screenGui.ResetOnSpawn = false  
                 InventoryViewer.ScreenGui = screenGui
                 
                 
@@ -3106,7 +3603,7 @@ inventoryViewerSection:Toggle({
                 realHotbar.Size = UDim2.new(0, 525, 0, 55)
                 realHotbar.Position = UDim2.new(0.5, -262, 1, -65) 
                 realHotbar.BackgroundColor3 = InventoryViewer.Theme.Background
-                realHotbar.BackgroundTransparency = 0.2
+                realHotbar.BackgroundTransparency = 0.3
                 realHotbar.BorderSizePixel = 0
                 
                 local cornerHotbar = Instance.new("UICorner")
@@ -3115,7 +3612,8 @@ inventoryViewerSection:Toggle({
                 
                 local strokeHotbar = Instance.new("UIStroke")
                 strokeHotbar.Color = InventoryViewer.Theme.Border
-                strokeHotbar.Thickness = 1.5
+                strokeHotbar.Thickness = 1
+                strokeHotbar.Transparency = 0.3
                 strokeHotbar.Parent = realHotbar
                 realHotbar.Parent = mainContainer
                 
@@ -3125,11 +3623,11 @@ inventoryViewerSection:Toggle({
                 realHotbarLabel.Size = UDim2.new(0, 80, 0, 20)
                 realHotbarLabel.Position = UDim2.new(0, 10, 0, -22)
                 realHotbarLabel.BackgroundColor3 = InventoryViewer.Theme.Background
-                realHotbarLabel.BackgroundTransparency = 0.2
+                realHotbarLabel.BackgroundTransparency = 0.3
                 realHotbarLabel.TextColor3 = InventoryViewer.Theme.Text
                 realHotbarLabel.Text = "hotbar"
                 realHotbarLabel.Font = Enum.Font.GothamBold
-                realHotbarLabel.TextSize = 14
+                realHotbarLabel.TextSize = 12
                 realHotbarLabel.TextXAlignment = Enum.TextXAlignment.Center
                 
                 local cornerHotbarLabel = Instance.new("UICorner")
@@ -3141,10 +3639,10 @@ inventoryViewerSection:Toggle({
                 
                 local inventoryViewerHotbar = Instance.new("Frame")
                 inventoryViewerHotbar.Name = "InventoryViewerHotbar"
-                inventoryViewerHotbar.Size = UDim2.new(0, 475, 0, 50)
+                inventoryViewerHotbar.Size = UDim2.new(0, 450, 0, 45)
                 inventoryViewerHotbar.Position = UDim2.new(0.5, -238, 1, -135) 
                 inventoryViewerHotbar.BackgroundColor3 = InventoryViewer.Theme.Background
-                inventoryViewerHotbar.BackgroundTransparency = 0.2
+                inventoryViewerHotbar.BackgroundTransparency = 0.3
                 inventoryViewerHotbar.BorderSizePixel = 0
                 
                 local cornerEquip = Instance.new("UICorner")
@@ -3153,7 +3651,8 @@ inventoryViewerSection:Toggle({
                 
                 local strokeEquip = Instance.new("UIStroke")
                 strokeEquip.Color = InventoryViewer.Theme.Border
-                strokeEquip.Thickness = 1.5
+                strokeEquip.Thickness = 1
+                strokeEquip.Transparency = 0.3
                 strokeEquip.Parent = inventoryViewerHotbar
                 inventoryViewerHotbar.Parent = mainContainer
                 
@@ -3163,11 +3662,11 @@ inventoryViewerSection:Toggle({
                 inventoryViewerHotbarLabel.Size = UDim2.new(0, 80, 0, 20)
                 inventoryViewerHotbarLabel.Position = UDim2.new(0, 10, 0, -22)
                 inventoryViewerHotbarLabel.BackgroundColor3 = InventoryViewer.Theme.Background
-                inventoryViewerHotbarLabel.BackgroundTransparency = 0.2
+                inventoryViewerHotbarLabel.BackgroundTransparency = 0.3
                 inventoryViewerHotbarLabel.TextColor3 = InventoryViewer.Theme.Text
                 inventoryViewerHotbarLabel.Text = "equip"
                 inventoryViewerHotbarLabel.Font = Enum.Font.GothamBold
-                inventoryViewerHotbarLabel.TextSize = 14
+                inventoryViewerHotbarLabel.TextSize = 12
                 inventoryViewerHotbarLabel.TextXAlignment = Enum.TextXAlignment.Center
                 
                 local cornerEquipLabel = Instance.new("UICorner")
@@ -3179,10 +3678,10 @@ inventoryViewerSection:Toggle({
                 
                 local inventoryViewArmor = Instance.new("Frame")
                 inventoryViewArmor.Name = "InventoryViewArmor"
-                inventoryViewArmor.Size = UDim2.new(0, 425, 0, 50)
+                inventoryViewArmor.Size = UDim2.new(0, 400, 0, 45)
                 inventoryViewArmor.Position = UDim2.new(0.5, -212, 1, -205) 
                 inventoryViewArmor.BackgroundColor3 = InventoryViewer.Theme.Background
-                inventoryViewArmor.BackgroundTransparency = 0.2
+                inventoryViewArmor.BackgroundTransparency = 0.3
                 inventoryViewArmor.BorderSizePixel = 0
                 
                 local cornerArmor = Instance.new("UICorner")
@@ -3191,7 +3690,8 @@ inventoryViewerSection:Toggle({
                 
                 local strokeArmor = Instance.new("UIStroke")
                 strokeArmor.Color = InventoryViewer.Theme.Border
-                strokeArmor.Thickness = 1.5
+                strokeArmor.Thickness = 1
+                strokeArmor.Transparency = 0.3
                 strokeArmor.Parent = inventoryViewArmor
                 inventoryViewArmor.Parent = mainContainer
                 
@@ -3201,11 +3701,11 @@ inventoryViewerSection:Toggle({
                 inventoryViewArmorLabel.Size = UDim2.new(0, 80, 0, 20)
                 inventoryViewArmorLabel.Position = UDim2.new(0, 10, 0, -22)
                 inventoryViewArmorLabel.BackgroundColor3 = InventoryViewer.Theme.Background
-                inventoryViewArmorLabel.BackgroundTransparency = 0.2
+                inventoryViewArmorLabel.BackgroundTransparency = 0.3
                 inventoryViewArmorLabel.TextColor3 = InventoryViewer.Theme.Text
                 inventoryViewArmorLabel.Text = "armor"
                 inventoryViewArmorLabel.Font = Enum.Font.GothamBold
-                inventoryViewArmorLabel.TextSize = 14
+                inventoryViewArmorLabel.TextSize = 12
                 inventoryViewArmorLabel.TextXAlignment = Enum.TextXAlignment.Center
                 
                 local cornerArmorLabel = Instance.new("UICorner")
@@ -3289,10 +3789,6 @@ inventoryViewerSection:Toggle({
             if not InventoryViewer.UpdateConnection then
                 InventoryViewer.UpdateConnection = RunService.RenderStepped:Connect(function()
                     if InventoryViewer.Enabled then
-                        if InventoryViewer.FOVCircle then
-                            InventoryViewer.FOVCircle.Position = Vector2.new(Workspace.CurrentCamera.ViewportSize.X / 2, Workspace.CurrentCamera.ViewportSize.Y / 2)
-                        end
-                        
                         if InventoryViewer.GUIEnabled then
                             InventoryViewer.updateGUI()
                         end
@@ -3304,10 +3800,9 @@ inventoryViewerSection:Toggle({
                     end
                 end)
             end
+            
+            setupInventoryViewerRespawnHandler()
         else
-            if InventoryViewer.FOVCircle then
-                InventoryViewer.FOVCircle.Visible = false
-            end
             
             if InventoryViewer.ScreenGui then
                 InventoryViewer.ScreenGui.Enabled = false
@@ -3323,43 +3818,6 @@ inventoryViewerSection:Toggle({
     end
 }, "EnableInventoryViewer")
 
-inventoryViewerSection:Slider({
-    Name = "FOV Radius",
-    Default = 80,
-    Minimum = 10,
-    Maximum = 500,
-    Precision = 2,
-    Callback = function(value)
-        InventoryViewer.FOVRadius = value
-        if InventoryViewer.FOVCircle then
-            InventoryViewer.FOVCircle.Radius = InventoryViewer.FOVRadius
-        end
-    end
-}, "InventoryViewerFOVRadius")
-
-inventoryViewerSection:Toggle({
-    Name = "Show FOV",
-    Default = false,
-    Callback = function(value)
-        InventoryViewer.FOVVisible = value
-        if InventoryViewer.FOVCircle then
-            InventoryViewer.FOVCircle.Visible = value and InventoryViewer.Enabled
-        end
-    end
-}, "InventoryViewerShowFOV")
-
-inventoryViewerSection:Colorpicker({
-    Name = "FOV Circle Color",
-    Default = InventoryViewer.FOVColor,
-    Alpha = 0,
-    Callback = function(color)
-        InventoryViewer.FOVColor = color
-        if InventoryViewer.FOVCircle then
-            InventoryViewer.FOVCircle.Color = color
-        end
-    end
-}, "InventoryViewerFOVColor")
-
 InventoryViewer.isPlayerInFOV = function(player)
     local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
     if not hrp then return false end
@@ -3370,7 +3828,11 @@ InventoryViewer.isPlayerInFOV = function(player)
     local center = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2)
     local distance = (center - Vector2.new(screenPos.X, screenPos.Y)).Magnitude
 
-    return distance <= InventoryViewer.FOVRadius
+    if SilentAim and SilentAim.CircleRadius then
+        return distance <= SilentAim.CircleRadius
+    else
+        return false 
+    end
 end
 
 InventoryViewer.scanForItems = function(player)
@@ -3442,18 +3904,25 @@ end
 
 InventoryViewer.createItemIcon = function(itemName, image, parent)
     if not parent then return end
+    
+    local size = InventoryViewer.CompactMode and 40 or 50
+    
     local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0, 40, 0, 40)
+    frame.Size = UDim2.new(0, size, 0, size)
     frame.BackgroundColor3 = InventoryViewer.Theme.SlotBg
-    frame.BackgroundTransparency = 0.1
+    frame.BackgroundTransparency = 0.2
     frame.BorderSizePixel = 0
+    
     local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 6)
+    corner.CornerRadius = UDim.new(0, InventoryViewer.CompactMode and 4 or 6)
     corner.Parent = frame
+    
     local stroke = Instance.new("UIStroke")
     stroke.Color = InventoryViewer.Theme.Border
-    stroke.Thickness = 1.5
+    stroke.Thickness = 1
+    stroke.Transparency = 0.3
     stroke.Parent = frame
+    
     local innerShadow = Instance.new("ImageLabel")
     innerShadow.Name = "InnerShadow"
     innerShadow.BackgroundTransparency = 1
@@ -3466,41 +3935,50 @@ InventoryViewer.createItemIcon = function(itemName, image, parent)
     innerShadow.ScaleType = Enum.ScaleType.Slice
     innerShadow.SliceCenter = Rect.new(23, 23, 277, 277)
     innerShadow.Parent = frame
+    
     frame.Parent = parent
+    
     local icon = Instance.new("ImageLabel")
     icon.Size = UDim2.new(0.8, 0, 0.8, 0)
     icon.Position = UDim2.new(0.1, 0, 0.1, 0)
     icon.BackgroundTransparency = 1
     icon.ZIndex = 3
+    
     if image then
         icon.Image = image
     else
         icon.BackgroundColor = Color3.fromRGB(150, 150, 150)
         icon.BackgroundTransparency = 0.7
     end
+    
     icon.Parent = frame
+    
     local tooltip = Instance.new("Frame")
     tooltip.Size = UDim2.new(0, 120, 0, 25)
     tooltip.Position = UDim2.new(0.5, -60, 0, -30)
     tooltip.BackgroundColor3 = InventoryViewer.Theme.Background
-    tooltip.BackgroundTransparency = 0.1
+    tooltip.BackgroundTransparency = 0.3
     tooltip.Visible = false
     tooltip.ZIndex = 10
     tooltip.Parent = frame
+    
     local tooltipCorner = Instance.new("UICorner")
     tooltipCorner.CornerRadius = UDim.new(0, 4)
     tooltipCorner.Parent = tooltip
+    
     local tooltipStroke = Instance.new("UIStroke")
     tooltipStroke.Color = InventoryViewer.Theme.Border
-    tooltipStroke.Thickness = 1.5
+    tooltipStroke.Thickness = 1
+    tooltipStroke.Transparency = 0.3
     tooltipStroke.Parent = tooltip
+    
     local tooltipText = Instance.new("TextLabel")
     tooltipText.Text = itemName
     tooltipText.Size = UDim2.new(1, -10, 1, 0)
     tooltipText.Position = UDim2.new(0, 5, 0, 0)
     tooltipText.BackgroundTransparency = 1
     tooltipText.TextColor3 = InventoryViewer.Theme.Text
-    tooltipText.TextSize = 12
+    tooltipText.TextSize = 11
     tooltipText.Font = Enum.Font.GothamBold
     tooltipText.TextWrapped = true
     tooltipText.ZIndex = 11
@@ -3856,6 +4334,12 @@ RunService.RenderStepped:Connect(function()
         SilentAim.FOVCircle.Transparency = SilentAim.CircleTransparency
         SilentAim.FOVCircle.NumSides = SilentAim.CircleSides
         SilentAim.FOVCircle.Thickness = SilentAim.CircleThickness
+        
+        if InventoryViewer and InventoryViewer.Enabled then
+            if InventoryViewer.GUIEnabled then
+                InventoryViewer.updateGUI()
+            end
+        end
     end
 
     if SilentAim.Enabled and SilentAim.IsAiming then
@@ -4958,7 +5442,7 @@ local function InitializeESP()
             AnchorPoint = Vector2.new(0.5, 0.5),
             BackgroundTransparency = 1,
             TextColor3 = ESP.Drawing.Names.RGB,
-            Font = 3, -- Заменяю Enum.Font.Code на числовое значение
+            Font = 3, 
             TextSize = ESP.FontSize,
             TextStrokeTransparency = 0,
             TextStrokeColor3 = Color3.fromRGB(0, 0, 0),
@@ -5551,12 +6035,7 @@ end
 
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
     if gameProcessed then return end
-    
-    
     if input.KeyCode == Enum.KeyCode.F3 and WorldESP.Enabled then
-        
-        
-        
         local toRemove = {}
         for instance, data in pairs(WorldESP.TrackedItems) do
             if data.IsContainer then
@@ -5571,13 +6050,9 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
         for _, instance in ipairs(toRemove) do
             WorldESP.TrackedItems[instance] = nil
         end
-        
-        
         local containers = Workspace:FindFirstChild("Containers")
         if containers then
             local count = 0
-            
-            
             local function scanRecursive(parent)
                 for _, child in pairs(parent:GetChildren()) do
                     if count >= 300 then return end 
@@ -5615,9 +6090,7 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
                     end)
                 end
             end
-            
             scanRecursive(containers)
-            
         end
     end
 end)
@@ -5640,11 +6113,8 @@ local function createZoom(time, amount, isZoomIn)
     Tween.Completed:Connect(function()
         ZoomSettings.CurrentTween = nil
         
-        
         if not isZoomIn then
             ZoomSettings.IsZooming = false
-            
-            
             if ZoomSettings.IsFOVChangerActive and FOVChangerSettings and FOVChangerSettings.Enabled then
                 
                 task.delay(0.05, function()
@@ -5689,7 +6159,6 @@ end
 
 
 local function setupZoomBindings()
-    
     if ZoomSettings.InputConnection then
         ZoomSettings.InputConnection:Disconnect()
         ZoomSettings.InputConnection = nil
@@ -5700,55 +6169,50 @@ local function setupZoomBindings()
         ZoomSettings.EndConnection = nil
     end
     
-    
     ZoomSettings.IsZooming = false
     ZoomSettings.IsKeyDown = false
-    
     
     if not ZoomSettings.Enabled then
         resetZoom()
         return
     end
     
+    local currentKey = ZoomSettings.Key
+    if MacLib and MacLib.Flags and MacLib.Flags["ZoomKey"] then
+        currentKey = MacLib.Flags["ZoomKey"]
+        ZoomSettings.Key = currentKey
+    end
     
     ZoomSettings.InputConnection = UserInputService.InputBegan:Connect(function(input, gameProcessed)
         if gameProcessed then return end
-        if input.KeyCode ~= ZoomSettings.Key then return end
         
+        local activeKey = ZoomSettings.Key
+        if input.KeyCode ~= activeKey then return end
         
         ZoomSettings.IsKeyDown = true
-        
-        
         ZoomSettings.IsFOVChangerActive = FOVChangerSettings and FOVChangerSettings.Enabled
         
-        
         if not ZoomSettings.IsZooming then
-            
             if ZoomSettings.IsFOVChangerActive then
-                
                 ZoomSettings.OldZoom = FOVChangerSettings.CustomFOV
             else
-                
                 ZoomSettings.OldZoom = Workspace.CurrentCamera.FieldOfView
             end
         end
-        
         
         ZoomSettings.IsZooming = true
         createZoom(ZoomSettings.ZoomTime, ZoomSettings.ZoomedAmount, true):Play()
     end)
     
-    
     ZoomSettings.EndConnection = UserInputService.InputEnded:Connect(function(input, gameProcessed)
         if gameProcessed then return end
-        if input.KeyCode ~= ZoomSettings.Key then return end
         
+        local activeKey = ZoomSettings.Key
+        if input.KeyCode ~= activeKey then return end
         
         ZoomSettings.IsKeyDown = false
         
-        
         if not ZoomSettings.IsZooming then return end
-        
         
         if ZoomSettings.IsFOVChangerActive and FOVChangerSettings and FOVChangerSettings.Enabled then
             createZoom(ZoomSettings.ZoomTime, FOVChangerSettings.CustomFOV, false):Play()
@@ -5762,31 +6226,47 @@ end
 ScreenSection:Toggle({
     Name = "Enable Zoom",
     Default = false,
+    Flag = "EnableZoom",
     Callback = function(value)
         ZoomSettings.Enabled = value
         setupZoomBindings()
     end
 })
 
-
 ScreenSection:Slider({
     Name = "Zoom Amount",
     Default = 10,
     Minimum = 5,
     Maximum = 40,
-    Precision = 2,
+    Precision = 1,
+    Flag = "ZoomAmount",
     Callback = function(value)
         ZoomSettings.ZoomedAmount = value
     end
 })
 
-
 ScreenSection:Keybind({
     Name = "Zoom Key",
-    Default = Enum.KeyCode.X,
+    Default = ZoomSettings.Key,
+    Flag = "ZoomKey",
     Callback = function() end,
     KeyChanged = function(key)
         ZoomSettings.Key = key
+        
+        if MacLib and MacLib.Flags then
+            MacLib.Flags["ZoomKey"] = key
+        end
+        
+        if ZoomSettings.InputConnection then
+            ZoomSettings.InputConnection:Disconnect()
+            ZoomSettings.InputConnection = nil
+        end
+        
+        if ZoomSettings.EndConnection then
+            ZoomSettings.EndConnection:Disconnect()
+            ZoomSettings.EndConnection = nil
+        end
+        
         setupZoomBindings()
     end
 })
@@ -5794,15 +6274,26 @@ ScreenSection:Keybind({
 
 local lastKeyCheck = tick()
 RunService.Heartbeat:Connect(function()
-    
     if tick() - lastKeyCheck > 1 then
         lastKeyCheck = tick()
         resetZoom()  
     end
+    
+    if MacLib and MacLib.Flags and MacLib.Flags["ZoomKey"] and ZoomSettings.Key ~= MacLib.Flags["ZoomKey"] then
+        ZoomSettings.Key = MacLib.Flags["ZoomKey"]
+        
+        if tick() - (ZoomSettings.LastBindUpdate or 0) > 0.5 then
+            ZoomSettings.LastBindUpdate = tick()
+            
+            if ZoomSettings.Enabled then
+                setupZoomBindings()
+            end
+        end
+    end
 end)
 
 local FOVChangerSettings = {
-    Enabled = false,
+    Enabled = true,
     CustomFOV = 70,
     DefaultFOV = workspace.CurrentCamera.FieldOfView,
     UpdateConnection = nil,
@@ -5914,21 +6405,25 @@ ScreenSection:Slider({
 })
 
 ScreenSection:Toggle({
-	Name = "No screen effects",
-	Value = false,
-	Callback = function(value)
-		values.enabled["noScreenEffects"] = value
-		while values.enabled["noScreenEffects"] do task.wait(0.1)
-		local pg = LC.PlayerGui
-			if pg and pg:FindFirstChild("MainGui") and pg.MainGui:FindFirstChild("MainFrame") and pg.MainGui.MainFrame:FindFirstChild("ScreenEffects") then
-				for i,v in ipairs(LC.PlayerGui.MainGui.MainFrame.ScreenEffects:GetChildren()) do
-					if v:IsA("Frame") then
-						v.Visible = false
-					end
-				end
-			end
-		end
-	end
+    Name = "No screen effects",
+    Default = false,
+    Tooltip = 'Disables mask effects',
+    Callback = function(v)
+        allvars.antimaskbool = v
+        if v == true then
+            game.Players.LocalPlayer.PlayerGui.MainGui.MainFrame.ScreenEffects.HelmetMask.TitanShield.Size = UDim2.new(0,0,1,0)
+            game.Players.LocalPlayer.PlayerGui.MainGui.MainFrame.ScreenEffects.Mask.GP5.Size = UDim2.new(0,0,1,0)
+            for i,v in pairs(game.Players.LocalPlayer.PlayerGui.MainGui.MainFrame.ScreenEffects.Visor:GetChildren()) do
+                v.Size = UDim2.new(0,0,1,0)
+            end
+        else
+            game.Players.LocalPlayer.PlayerGui.MainGui.MainFrame.ScreenEffects.HelmetMask.TitanShield.Size = UDim2.new(1,0,1,0)
+            game.Players.LocalPlayer.PlayerGui.MainGui.MainFrame.ScreenEffects.Mask.GP5.Size = UDim2.new(1,0,1,0)
+            for i,v in pairs(game.Players.LocalPlayer.PlayerGui.MainGui.MainFrame.ScreenEffects.Visor:GetChildren()) do
+                v.Size = UDim2.new(1,0,1,0)
+            end
+        end
+    end
 })
 
 
@@ -6268,7 +6763,6 @@ local function CleanupArmsVisual()
     ArmsVisual.SavedAppearances = {}
 end
 
-
 local PlayerHandSection = tabs.Player:Section({ Side = "Left", Name = "Hand Customization" })
 
 PlayerHandSection:Header({
@@ -6486,59 +6980,69 @@ PlayerHandSection:Dropdown({
     end
 }, "MaterialType")
 
-
 local function updateGazeLine()
-    
     if not ESP.Enabled or not ESP.Drawing.GazeLine.Enabled then return end
     
+    local localPlayer = game:GetService("Players").LocalPlayer
+    local localCharacter = localPlayer.Character
+    local localHRP = localCharacter and localCharacter:FindFirstChild("HumanoidRootPart")
+    local camera = Workspace.CurrentCamera
+    local maxDistance = ESP.MaxDistance
+    local gazeLength = ESP.Drawing.GazeLine.Thickness
+    local gazeColor = ESP.Drawing.GazeLine.RGB
     
-    local players = game:GetService("Players"):GetPlayers()
-    for _, player in pairs(players) do
-        
-        if player == game:GetService("Players").LocalPlayer then continue end
-        
-        
-        if not player or not player.Character then continue end
-        
+    if not localHRP then return end
+    
+    if not ESP.GazeLines then
+        ESP.GazeLines = {}
+    end
+    
+    local function processGazeLine(player)
+        if player == localPlayer then return end
+        if not player or not player.Character then return end
         
         local head = player.Character:FindFirstChild("Head")
-        if not head then continue end
+        if not head then return end
         
-        
-        local distance = (game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position - head.Position).Magnitude
-        if distance > ESP.MaxDistance then continue end
-        
+        local distance = (localHRP.Position - head.Position).Magnitude
+        if distance > maxDistance then 
+            if ESP.GazeLines[player] then
+                ESP.GazeLines[player].Visible = false
+            end
+            return 
+        end
         
         if ESP.TeamCheck then
             local playerTeam = player.Team
-            local localTeam = game:GetService("Players").LocalPlayer.Team
-            if playerTeam and localTeam and playerteam == localTeam then continue end
+            local localTeam = localPlayer.Team
+            if playerTeam and localTeam and playerTeam == localTeam then 
+                if ESP.GazeLines[player] then
+                    ESP.GazeLines[player].Visible = false
+                end
+                return 
+            end
         end
-        
         
         local lookVector = head.CFrame.LookVector
-        
-        
-        if not ESP.GazeLines then
-            ESP.GazeLines = {}
-        end
         
         if not ESP.GazeLines[player] then
             ESP.GazeLines[player] = Drawing.new("Line")
             ESP.GazeLines[player].Thickness = ESP.Drawing.GazeLine.Thickness
-            ESP.GazeLines[player].Color = ESP.Drawing.GazeLine.RGB
+            ESP.GazeLines[player].Color = gazeColor
             ESP.GazeLines[player].Transparency = 1
-            ESP.GazeLines[player].Visible = true
         end
         
-        
         local headPosition = head.Position
-        local screenHeadPosition = Workspace.CurrentCamera:WorldToViewportPoint(headPosition)
-        
-        
         local endPosition = headPosition + (lookVector * ESP.Drawing.GazeLine.Length)
-        local screenEndPosition = Workspace.CurrentCamera:WorldToViewportPoint(endPosition)
         
+        local distanceToCamera = (camera.CFrame.Position - headPosition).Magnitude
+        if distanceToCamera > maxDistance * 1.2 then
+            ESP.GazeLines[player].Visible = false
+            return
+        end
+        
+        local screenHeadPosition = camera:WorldToViewportPoint(headPosition)
+        local screenEndPosition = camera:WorldToViewportPoint(endPosition)
         
         if screenHeadPosition.Z > 0 and screenEndPosition.Z > 0 then
             ESP.GazeLines[player].From = Vector2.new(screenHeadPosition.X, screenHeadPosition.Y)
@@ -6549,15 +7053,17 @@ local function updateGazeLine()
         end
     end
     
+    for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+        processGazeLine(player)
+    end
     
-    for player, line in pairs(ESP.GazeLines or {}) do
+    for player, line in pairs(ESP.GazeLines) do
         if not player or not player.Character or not player.Character:FindFirstChild("Head") then
             line.Visible = false
             ESP.GazeLines[player] = nil
         end
     end
 end
-
 
 local oldUpdateESP = UpdateESPSettings
 UpdateESPSettings = function()
@@ -6570,14 +7076,30 @@ UpdateESPSettings = function()
     pcall(updateGazeLine)
 end
 
-
 if not ESP.Connections.GazeLineUpdate then
+    if ESP.Connections.GazeLineUpdate then
+        ESP.Connections.GazeLineUpdate:Disconnect()
+    end
+    
     ESP.Connections.GazeLineUpdate = RunService.RenderStepped:Connect(function()
         if ESP.Enabled and ESP.Drawing.GazeLine.Enabled then
             local currentTime = tick()
+            
+            if not ESP.Performance then
+                ESP.Performance = {}
+            end
+            
+            if not ESP.Performance.LastGazeLineUpdate then
+                ESP.Performance.LastGazeLineUpdate = currentTime
+                ESP.Performance.GazeLineUpdateInterval = 0.03
+            end
+            
             if currentTime - ESP.Performance.LastGazeLineUpdate >= ESP.Performance.GazeLineUpdateInterval then
                 ESP.Performance.LastGazeLineUpdate = currentTime
-                pcall(updateGazeLine)
+                local success, err = pcall(updateGazeLine)
+                if not success and ESP.DebugMode then
+                    warn("Ошибка обновления линий: " .. tostring(err))
+                end
             end
         else
             if ESP.GazeLines then
@@ -6585,10 +7107,16 @@ if not ESP.Connections.GazeLineUpdate then
                     line.Visible = false
                 end
             end
-    end
-end)
+        end
+    end)
+    
+    game:GetService("Players").PlayerRemoving:Connect(function(player)
+        if ESP.GazeLines and ESP.GazeLines[player] then
+            ESP.GazeLines[player].Visible = false
+            ESP.GazeLines[player] = nil
+        end
+    end)
 end
-
 
 local function UpdateSkeletonLine(line, part1, part2)
     if not line or not part1 or not part2 then
@@ -6607,21 +7135,17 @@ local function UpdateSkeletonLine(line, part1, part2)
     
     local position1, position2
     
-    pcall(function()
-        if typeof(part1) == "table" and part1.Position then
-            position1 = part1.Position
-        elseif typeof(part1) == "Instance" and part1:IsA("BasePart") then
-            position1 = part1.Position
-        end
-    end)
+    if typeof(part1) == "table" and part1.Position then
+        position1 = part1.Position
+    elseif typeof(part1) == "Instance" and part1:IsA("BasePart") then
+        position1 = part1.Position
+    end
     
-    pcall(function()
-        if typeof(part2) == "table" and part2.Position then
-            position2 = part2.Position
-        elseif typeof(part2) == "Instance" and part2:IsA("BasePart") then
-            position2 = part2.Position
-        end
-    end)
+    if typeof(part2) == "table" and part2.Position then
+        position2 = part2.Position
+    elseif typeof(part2) == "Instance" and part2:IsA("BasePart") then
+        position2 = part2.Position
+    end
     
     if not position1 or not position2 then
         line.Visible = false
@@ -6633,21 +7157,29 @@ local function UpdateSkeletonLine(line, part1, part2)
     local pos2, visible2 = camera:WorldToViewportPoint(position2)
     
     if visible1 and visible2 and pos1.Z > 0 and pos2.Z > 0 then
-        local baseFOV = 70 
-
-        local currentFOV = camera.FieldOfView
-        local fovRatio = baseFOV / currentFOV
-        local fovCompensation = math.clamp(
-            math.tan(math.rad(baseFOV) / 2) / math.tan(math.rad(currentFOV) / 2),
-            0.5,  
-            2.0   
-        )
-
+        if not ESP.CachedFOV then
+            ESP.CachedFOV = {
+                baseFOV = 70,
+                currentFOV = camera.FieldOfView,
+                lastUpdateTime = tick(),
+                fovCompensation = 1
+            }
+        end
+        
+        local currentTime = tick()
+        if currentTime - ESP.CachedFOV.lastUpdateTime > 0.1 or ESP.CachedFOV.currentFOV ~= camera.FieldOfView then
+            ESP.CachedFOV.currentFOV = camera.FieldOfView
+            ESP.CachedFOV.lastUpdateTime = currentTime
+            ESP.CachedFOV.fovCompensation = math.clamp(
+                math.tan(math.rad(ESP.CachedFOV.baseFOV) / 2) / math.tan(math.rad(camera.FieldOfView) / 2),
+                0.5, 2.0
+            )
+        end
+        
         local distanceToCamera = (camera.CFrame.Position - position1).Magnitude
         local distanceFactor = math.clamp(1 - (distanceToCamera / 1000), 0.1, 1)
-
         local baseThickness = ESP.Drawing.Skeleton.Thickness or 1
-        local finalThickness = baseThickness * fovCompensation * distanceFactor
+        local finalThickness = baseThickness * ESP.CachedFOV.fovCompensation * distanceFactor
         
         line.From = Vector2.new(pos1.X, pos1.Y)
         line.To = Vector2.new(pos2.X, pos2.Y)
@@ -6661,6 +7193,11 @@ end
 local function UpdatePlayerSkeleton(player, skeleton)
     if not player or not skeleton then return end
     
+    local currentTime = tick()
+    if not skeleton.lastUpdate or (currentTime - skeleton.lastUpdate > 1) then
+        skeleton.forceUpdate = true
+    end
+    
     local character = player.Character
     if not character then
         if workspace:FindFirstChild("Players") then
@@ -6668,30 +7205,30 @@ local function UpdatePlayerSkeleton(player, skeleton)
         end
     end
     
-    if not character or not ESP.Drawing.Skeleton.Enabled then
+    local function hideAllLines()
+        if skeleton.allHidden then return end
+        
         for name, line in pairs(skeleton) do
-            if type(name) == "string" and name ~= "lastPlayerPos" and name ~= "lastUpdate" and name ~= "lastFoV" and name ~= "lastCamPos" then
-                pcall(function()
-                    if line and typeof(line) ~= "table" and type(line) ~= "number" then
-                        line.Visible = false
-                    end
-                end)
+            if type(name) == "string" and name ~= "lastPlayerPos" and name ~= "lastUpdate" and 
+               name ~= "lastFoV" and name ~= "lastCamPos" and name ~= "allHidden" and
+               name ~= "forceUpdate" then
+                
+                if line and typeof(line) ~= "table" and type(line) ~= "number" then
+                    line.Visible = false
+                end
             end
         end
+        skeleton.allHidden = true
+    end
+    
+    if not character or not ESP.Drawing.Skeleton.Enabled then
+        hideAllLines()
         return
     end
     
     local humanoid = character:FindFirstChild("Humanoid")
     if humanoid and humanoid.Health <= 0 then
-        for name, line in pairs(skeleton) do
-            if type(name) == "string" and name ~= "lastPlayerPos" and name ~= "lastUpdate" and name ~= "lastFoV" and name ~= "lastCamPos" then
-                pcall(function() 
-                    if line and typeof(line) ~= "table" and type(line) ~= "number" then
-                        line.Visible = false
-                    end
-                end)
-            end
-        end
+        hideAllLines()
         return
     end
     
@@ -6701,15 +7238,7 @@ local function UpdatePlayerSkeleton(player, skeleton)
     local localRootPart = localCharacter and localCharacter:FindFirstChild("HumanoidRootPart")
     
     if not rootPart or not localRootPart then
-        for name, line in pairs(skeleton) do
-            if type(name) == "string" and name ~= "lastPlayerPos" and name ~= "lastUpdate" and name ~= "lastFoV" and name ~= "lastCamPos" then
-                pcall(function() 
-                    if line and typeof(line) ~= "table" and type(line) ~= "number" then
-                        line.Visible = false
-                    end
-                end)
-            end
-        end
+        hideAllLines()
         return
     end
     
@@ -6719,21 +7248,26 @@ local function UpdatePlayerSkeleton(player, skeleton)
     local currentFoV = camera.FieldOfView
     local rootPos = rootPart.Position
     
+    if not skeleton.forceUpdate and skeleton.lastPlayerPos and skeleton.lastCamPos and skeleton.lastFoV then
+        local positionDifference = (skeleton.lastPlayerPos - rootPos).Magnitude
+        local cameraDifference = (skeleton.lastCamPos - currentCamPos).Magnitude
+        local fovDifference = math.abs(skeleton.lastFoV - currentFoV)
+        
+        if positionDifference < 0.5 and cameraDifference < 0.5 and fovDifference < 0.1 then
+            return
+        end
+    end
+    
     local distance = (localRootPart.Position - rootPos).Magnitude
     local _, onScreen = camera:WorldToViewportPoint(rootPos)
     
     if not onScreen or (ESP.MaxDistance and distance > ESP.MaxDistance) then
-        for name, line in pairs(skeleton) do
-            if type(name) == "string" and name ~= "lastPlayerPos" and name ~= "lastUpdate" and name ~= "lastFoV" and name ~= "lastCamPos" then
-                pcall(function() 
-                    if line and typeof(line) ~= "table" and type(line) ~= "number" then
-                        line.Visible = false
-                    end
-                end)
-            end
-        end
+        hideAllLines()
         return
     end
+    
+    skeleton.allHidden = false
+    skeleton.forceUpdate = false
     skeleton.lastPlayerPos = rootPos
     skeleton.lastUpdate = tick()
     skeleton.lastFoV = currentFoV
@@ -6931,7 +7465,6 @@ local function UpdatePlayerSkeleton(player, skeleton)
         end
     end)
 end
-
 local function ClearSkeletons()
     for player, skeleton in pairs(ESP.Skeletons) do
         for name, element in pairs(skeleton) do
@@ -7764,8 +8297,8 @@ local function ForceUpdateArmsVisual()
             if child:IsA("Model") and not child.Name:lower():find("camera") then
                 ArmsVisual.CachedViewModel = child
                 break
+            end
         end
-    end
     end)
     
     task.delay(0.05, function()
@@ -7952,7 +8485,7 @@ runs.Heartbeat:Connect(function(delta)
             if selftrack_update >= 30 then
                 selftrack_update = 0
                 
-                local ping = localplayer:GetNetworkPing() * 1000
+                local ping = localplayer:GetNetworkPing() * 1000 + 5
                 local key = math.floor(ping / 30) * 30
                 local added = false
                 
@@ -8487,30 +9020,6 @@ runs.Heartbeat:Connect(function(delta)
     end
 end)
 
-local desynctable = {}
-local desyncvis = nil
-local desyncbool = false
-local invisbool = false
-local desyncPos = false
-local desynXp = 0
-local desynYp = 0
-local desynZp = 0
-local desyncOr = false
-local desynXo = 0
-local desynYo = 0
-local desynZo = 0
-local visdesync = false
-local desynccolor = Color3.fromRGB(255,0,0)
-local desynctrans = 0.5
-local camthirdp = false
-local thirdpshow = true
-local camthirdpX = 0.1
-local camthirdpY = -0.9
-local camthirdpZ = -4
-local invisanim = Instance.new("Animation")
-invisanim.AnimationId = "rbxassetid://15609995579"
-local invisnum = 2.35
-local invistrack
 local function toggleDesync(enabled)
     desyncbool = enabled
     if enabled then
@@ -8541,6 +9050,7 @@ local function toggleDesync(enabled)
         end)
     end
 end
+
 local function toggleForceUnderground(enabled)
     invisbool = enabled
     
@@ -8572,7 +9082,7 @@ local function toggleForceUnderground(enabled)
                     end
                 end)
                 
-                print("Третье лицо активировано")
+
             end
         end
         
@@ -8668,7 +9178,7 @@ local desyncSection = tabs.Player:Section({
 })
 
 desyncSection:Header({
-    Text = "Desync"
+    Text = "Desync [Use Third Person]"
 })
 
 desyncSection:Toggle({
@@ -8680,37 +9190,30 @@ desyncSection:Toggle({
 }, "Desync")
 
 desyncSection:Toggle({
-    Name = "Force Underground [doesnt work very well]",
+    Name = "Force Underground",
     Default = false,
     Callback = function(value)
-        toggleForceUnderground(value)
+        invisbool = value
         
         if value then
-            task.spawn(function()
-                local redCube
-                for _, obj in pairs(workspace:GetDescendants()) do
-                    if obj:IsA("BasePart") and obj.Color == Color3.fromRGB(255, 0, 0) then
-                        redCube = obj
-                        break
-                    end
-                end
-                if redCube then
-                    workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
-                    workspace.CurrentCamera.CFrame = CFrame.new(redCube.Position + Vector3.new(0, 5, 0), redCube.Position)
-                    if not _G.OriginalCameraPosition then
-                        _G.OriginalCameraPosition = workspace.CurrentCamera.CFrame
-                    end
-                end
-                task.delay(0.5, function()
-                    if desyncbool and invisbool and localplayer.Character then
-                        game.Players.LocalPlayer.CameraMode = Enum.CameraMode.Classic
-                        game.Players.LocalPlayer.CameraMaxZoomDistance = 5
-                        game.Players.LocalPlayer.CameraMinZoomDistance = 5
-                        localplayer.Character.Humanoid.CameraOffset = Vector3.new(camthirdpX, camthirdpY, camthirdpZ)
-                    end
-                end)
-            end)
+            invistrack = localplayer.Character.Humanoid.Animator:LoadAnimation(invisanim)
+            
+            if desyncbool then
+                invistrack:Play(.01, 1, 0)
+                invistrack.TimePosition = invisnum
+            end
         else
+            if invistrack then
+                invistrack:Stop()
+                invistrack:Destroy()
+                
+                for _, track in pairs(localplayer.Character.Humanoid.Animator:GetPlayingAnimationTracks()) do
+                    if track.Animation.AnimationId == invisanim.AnimationId then
+                        track:Stop()
+                    end
+                end
+            end
+            
             if _G.OriginalCameraPosition then
                 workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
                 workspace.CurrentCamera.CFrame = _G.OriginalCameraPosition
@@ -8729,6 +9232,247 @@ desyncSection:Toggle({
         end
     end
 }, "HideDesync")
+
+local thirdPersonSection = tabs.Player:Section({ 
+    Side = "Right", 
+    Name = "Third Person" 
+})
+
+thirdPersonSection:Header({
+    Text = "Third Person"
+})
+
+thirdPersonSection:Toggle({
+    Name = "Third Person",
+    Default = false,
+    Callback = function(value)
+        allvars.camthirdp = value
+        _G.allvars.camthirdp = value
+        
+        task.spawn(function()
+            pcall(function()
+                if value then
+                    if localplayer and localplayer.Character and localplayer.Character:FindFirstChild("Humanoid") then
+                        localplayer.CameraMaxZoomDistance = 5
+                        localplayer.CameraMinZoomDistance = 5
+                        
+                        localplayer.Character.Humanoid.CameraOffset = Vector3.new(allvars.camthirdpX or 2, allvars.camthirdpY or 2, allvars.camthirdpZ or 2)
+                        
+                        if _G.SetThirdPersonCamera then
+                            _G.SetThirdPersonCamera()
+                        end
+                    end
+                else
+                    if localplayer and localplayer.Character and localplayer.Character:FindFirstChild("Humanoid") then
+                        localplayer.Character.Humanoid.CameraOffset = Vector3.new(0, 0, 0)
+                        localplayer.CameraMaxZoomDistance = 0.5
+                        localplayer.CameraMinZoomDistance = 0.5
+                    end
+                end
+            end)
+        end)
+    end,
+    KeyBind = Enum.KeyCode.KeypadSix
+}, "ThirdPersonToggle")
+
+thirdPersonSection:Toggle({
+    Name = "Show Character",
+    Default = false,
+    Callback = function(value)
+        thirdpshow = value
+        _G.thirdpshow = value
+    end
+}, "ShowCharacterToggle")
+if not _G.allvars.camthirdpX then _G.allvars.camthirdpX = 2 end
+if not _G.allvars.camthirdpY then _G.allvars.camthirdpY = 2 end
+if not _G.allvars.camthirdpZ then _G.allvars.camthirdpZ = 2 end
+if not allvars.camthirdpX then allvars.camthirdpX = 2 end
+if not allvars.camthirdpY then allvars.camthirdpY = 2 end
+if not allvars.camthirdpZ then allvars.camthirdpZ = 2 end
+
+thirdPersonSection:Slider({
+    Name = "Thirdp Offset X",
+    Default = 2,
+    Minimum = -10,
+    Maximum = 10,
+    Precision = 1,
+    Callback = function(value)
+        allvars.camthirdpX = value
+        _G.allvars.camthirdpX = value
+        
+        task.spawn(function()
+            if allvars.camthirdp and localplayer.Character and localplayer.Character:FindFirstChild("Humanoid") then
+                localplayer.CameraMaxZoomDistance = 5
+                localplayer.CameraMinZoomDistance = 5
+                
+                task.wait(0.01)
+                
+                if allvars.camthirdp and localplayer.Character and localplayer.Character:FindFirstChild("Humanoid") then
+                    localplayer.Character.Humanoid.CameraOffset = Vector3.new(allvars.camthirdpX, allvars.camthirdpY, allvars.camthirdpZ)
+                end
+            end
+        end)
+    end
+}, "ThirdPersonXOffset")
+
+thirdPersonSection:Slider({
+    Name = "Thirdp Offset Y",
+    Default = 2,
+    Minimum = -10,
+    Maximum = 10,
+    Precision = 1,
+    Callback = function(value)
+        allvars.camthirdpY = value
+        _G.allvars.camthirdpY = value
+        
+        task.spawn(function()
+            if allvars.camthirdp and localplayer.Character and localplayer.Character:FindFirstChild("Humanoid") then
+                localplayer.CameraMaxZoomDistance = 5
+                localplayer.CameraMinZoomDistance = 5
+                
+                task.wait(0.01)
+                
+                if allvars.camthirdp and localplayer.Character and localplayer.Character:FindFirstChild("Humanoid") then
+                    localplayer.Character.Humanoid.CameraOffset = Vector3.new(allvars.camthirdpX, allvars.camthirdpY, allvars.camthirdpZ)
+                end
+            end
+        end)
+    end
+}, "ThirdPersonYOffset")
+
+thirdPersonSection:Slider({
+    Name = "Thirdp Offset Z",
+    Default = 2,
+    Minimum = -10,
+    Maximum = 10,
+    Precision = 1,
+    Callback = function(value)
+        allvars.camthirdpZ = value
+        _G.allvars.camthirdpZ = value
+        
+        task.spawn(function()
+            if allvars.camthirdp and localplayer.Character and localplayer.Character:FindFirstChild("Humanoid") then
+                localplayer.CameraMaxZoomDistance = 5
+                localplayer.CameraMinZoomDistance = 5
+                
+                task.wait(0.01)
+                
+                if allvars.camthirdp and localplayer.Character and localplayer.Character:FindFirstChild("Humanoid") then
+                    localplayer.Character.Humanoid.CameraOffset = Vector3.new(allvars.camthirdpX, allvars.camthirdpY, allvars.camthirdpZ)
+                end
+            end
+        end)
+    end
+}, "ThirdPersonZOffset")
+
+if _G.ThirdPersonCameraConnection then
+    _G.ThirdPersonCameraConnection:Disconnect()
+    _G.ThirdPersonCameraConnection = nil
+end
+
+if _G.ThirdPersonCameraConnection then
+    _G.ThirdPersonCameraConnection:Disconnect()
+    _G.ThirdPersonCameraConnection = nil
+end
+
+_G.ThirdPersonCameraConnection = RunService.Heartbeat:Connect(function()
+    pcall(function()
+        if allvars.camthirdp and localplayer.Character and localplayer.Character:FindFirstChild("Humanoid") then
+            localplayer.CameraMaxZoomDistance = 5
+            localplayer.CameraMinZoomDistance = 5
+            
+            localplayer.Character.Humanoid.CameraOffset = Vector3.new(allvars.camthirdpX or 2, allvars.camthirdpY or 2, allvars.camthirdpZ or 2)
+            
+            if workspace.CurrentCamera then
+                workspace.CurrentCamera.CameraSubject = localplayer.Character.Humanoid
+                workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
+            end
+        end
+    end)
+end)
+
+if _G.ThirdPersonCameraConnection2 then
+    _G.ThirdPersonCameraConnection2:Disconnect()
+    _G.ThirdPersonCameraConnection2 = nil
+end
+
+_G.ThirdPersonCameraConnection2 = RunService.RenderStepped:Connect(function()
+    pcall(function()
+        if allvars.camthirdp and localplayer.Character and localplayer.Character:FindFirstChild("Humanoid") then
+            localplayer.CameraMaxZoomDistance = 5
+            localplayer.CameraMinZoomDistance = 5
+            
+            localplayer.Character.Humanoid.CameraOffset = Vector3.new(allvars.camthirdpX or 2, allvars.camthirdpY or 2, allvars.camthirdpZ or 2)
+        end
+    end)
+end)
+
+local function setupSafeThirdPersonMode()
+    _G.SetThirdPersonCamera = function()
+        pcall(function()
+            if allvars and allvars.camthirdp and localplayer and localplayer.Character and localplayer.Character:FindFirstChild("Humanoid") then
+                localplayer.CameraMaxZoomDistance = 5
+                localplayer.CameraMinZoomDistance = 5
+                localplayer.Character.Humanoid.CameraOffset = Vector3.new(allvars.camthirdpX or 2, allvars.camthirdpY or 2, allvars.camthirdpZ or 2)
+            end
+        end)
+    end
+    
+    local function onHumanoidAdded(humanoid)
+        pcall(function()
+            humanoid.AutoRotate = true
+            
+            humanoid:GetPropertyChangedSignal("CameraOffset"):Connect(function()
+                if allvars.camthirdp then
+                    _G.SetThirdPersonCamera()
+                end
+            end)
+        end)
+    end
+    
+    if localplayer.Character and localplayer.Character:FindFirstChild("Humanoid") then
+        onHumanoidAdded(localplayer.Character.Humanoid)
+    end
+    
+    localplayer.CharacterAdded:Connect(function(character)
+        if character:FindFirstChild("Humanoid") then
+            onHumanoidAdded(character:FindFirstChild("Humanoid"))
+        else
+            character.ChildAdded:Connect(function(child)
+                if child:IsA("Humanoid") then
+                    onHumanoidAdded(child)
+                end
+            end)
+        end
+    end)
+end
+
+setupSafeThirdPersonMode()
+
+task.spawn(function()
+    pcall(function()
+        local transparencyController = require(game.Players.LocalPlayer.PlayerScripts.PlayerModule.CameraModule.TransparencyController)
+        
+        local originalUpdate = transparencyController.Update
+        
+        transparencyController.Update = function(self, dt)
+            pcall(function()
+                if _G.allvars and _G.allvars.camthirdp and _G.thirdpshow then
+                    if self.cachedParts then
+                        for part, _ in pairs(self.cachedParts) do
+                            part.LocalTransparencyModifier = 0
+                        end
+                    end
+                    
+                    self.transparencyDirty = false
+                    self.lastTransparency = 0
+                else
+                    originalUpdate(self, dt)
+                end
+            end)
+        end
+    end)
+end)
 
 sections.GunMod:Toggle({
     Name = "No Sway",
@@ -9126,36 +9870,8 @@ if ESP.Enabled and allvars.espextract then
     scanForExtracts()
 end
 
-local QuickBuySection = tabs.Player:Section({ Side = "Right", Name = "Fast buy" })
-
-QuickBuySection:Header({
-    Text = "Buy [Only in lobby]"
-})
-
-QuickBuySection:Button({
-    Name = "Buy water",
-    Callback = function()
-        local args = {
-            [1] = {
-                ["Vendor"] = workspace.WaterMachine,
-                ["ItemName"] = "Hydration"
-            }
-        }
-        
-        game:GetService("ReplicatedStorage").Remotes.Vendor:InvokeServer(unpack(args))
-    end
-})
-
-QuickBuySection:Button({
-    Name = "Buy food",
-    Callback = function()
-        local args = {
-            [1] = {
-                ["Vendor"] = workspace.FoodMachine,
-                ["ItemName"] = "Hunger"
-            }
-        }
-        
-        game:GetService("ReplicatedStorage").Remotes.Vendor:InvokeServer(unpack(args))
-    end
+Window:Notify({
+    Title = "Oblivion Loaded!",
+    Description = "menu loaded successfully!",
+    Lifetime = 5
 })
